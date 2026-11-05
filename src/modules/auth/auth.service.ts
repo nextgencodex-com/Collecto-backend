@@ -13,6 +13,10 @@ import { hashRefreshToken, newRefreshToken, signAccessToken } from "./auth.token
 /** A refresh token revoked this recently is treated as a harmless race (two tabs), not theft. */
 const REUSE_GRACE_MS = 10_000;
 
+/** Marks a refresh rejected only because another request rotated the same token first (e.g. two tabs). */
+export const REFRESH_RACE = "refresh_race";
+const raceError = () => new HttpError(401, "Session expired", [{ code: REFRESH_RACE }]);
+
 export const BAD_CREDENTIALS = "Incorrect username or password.";
 const INACTIVE = "This rider account is inactive. Please contact the owner.";
 
@@ -81,8 +85,8 @@ export async function refresh(presented: string | undefined) {
   if (!row) throw new HttpError(401, "Session expired");
 
   if (row.revokedAt) {
-    if (Date.now() - row.revokedAt.getTime() > REUSE_GRACE_MS)
-      await repo.revokeFamily(row.familyId);
+    if (Date.now() - row.revokedAt.getTime() <= REUSE_GRACE_MS) throw raceError();
+    await repo.revokeFamily(row.familyId); // an old token replayed later: treat as theft
     throw new HttpError(401, "Session expired");
   }
   if (row.expiresAt <= new Date()) throw new HttpError(401, "Session expired");
@@ -94,7 +98,7 @@ export async function refresh(presented: string | undefined) {
   }
 
   // Only one concurrent request may win the rotation; the loser is treated as a race.
-  if (!(await repo.revokeRefreshIfActive(row.id))) throw new HttpError(401, "Session expired");
+  if (!(await repo.revokeRefreshIfActive(row.id))) throw raceError();
   return issue(user, { familyId: row.familyId, persistent: row.persistent });
 }
 
