@@ -2,7 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import request from "supertest";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
-import { seedDatabase } from "../../prisma/seed.js";
+import { seedDatabase } from "../../src/db/seed.js";
 import { createApp } from "../../src/app.js";
 import { prisma } from "../../src/config/database.js";
 import { env } from "../../src/config/env.js";

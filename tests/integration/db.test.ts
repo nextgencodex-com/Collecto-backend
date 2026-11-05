@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { seedDatabase } from "../../prisma/seed.js";
+import { seedDatabase } from "../../src/db/seed.js";
 import { prisma } from "../../src/config/database.js";
 import { toDbDate } from "../../src/utils/dates.js";
 
