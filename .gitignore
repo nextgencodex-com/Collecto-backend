@@ -151,3 +151,4 @@ vite.config.ts.timestamp-*
 # Backend-specific
 src/generated/
 uploads/
+uploads-perf-tmp/

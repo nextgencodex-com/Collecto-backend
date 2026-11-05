@@ -6,7 +6,7 @@ import { isoDate, nowHHmm, toDbDate, today } from "../../utils/dates.js";
 import { closingDto } from "../../utils/dto.js";
 import { HttpError } from "../../utils/http.js";
 import { dec, fmtRs, signedRs } from "../../utils/money.js";
-import { loadCore } from "../bootstrap/bootstrap.repository.js";
+import { loadCurrent } from "../bootstrap/bootstrap.repository.js";
 import * as notifications from "../notifications/notifications.repository.js";
 import * as repo from "./closings.repository.js";
 
@@ -21,12 +21,13 @@ export async function submit(rider: AuthUser, input: { cash: number; note: strin
   if (await repo.findForDay(rider.id, toDbDate(date)))
     throw new HttpError(409, "The daily closing has already been submitted for today.");
 
-  const { customers, items, payments } = await loadCore(rider.id);
+  const { customers, items, payments, prior } = await loadCurrent(date, rider.id);
   const d = deriveAll(
     items,
     payments,
     customers.map((c) => c.id),
     date,
+    prior,
   );
   const mine = [...d.customers.values()];
   const todays = payments.filter((p) => p.riderId === rider.id && isoDate(p.date) === date);
