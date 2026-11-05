@@ -20,6 +20,20 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
     });
     return;
   }
+  if (err?.name === "MulterError") {
+    const big = err.code === "LIMIT_FILE_SIZE";
+    res.status(big ? 413 : 400).json({
+      success: false,
+      message: big ? "Image must be 2 MB or smaller." : "Invalid upload",
+      errors: [],
+    });
+    return;
+  }
+  // Safety net for unique-constraint races the services' pre-checks didn't catch
+  if (err?.code === "P2002") {
+    res.status(409).json({ success: false, message: "This record already exists.", errors: [] });
+    return;
+  }
   // 4xx raised by Express itself (e.g. malformed JSON, payload too large)
   if (typeof err?.status === "number" && err.status >= 400 && err.status < 500) {
     res.status(err.status).json({ success: false, message: "Bad request", errors: [] });
