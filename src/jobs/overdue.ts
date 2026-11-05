@@ -3,7 +3,7 @@ import { inTransaction } from "../config/database.js";
 import { env } from "../config/env.js";
 import { logger } from "../config/logger.js";
 import { deriveAll } from "../domain/adapters.js";
-import { loadCore } from "../modules/bootstrap/bootstrap.repository.js";
+import { loadCurrent } from "../modules/bootstrap/bootstrap.repository.js";
 import * as notifications from "../modules/notifications/notifications.repository.js";
 import { today } from "../utils/dates.js";
 import { customerId } from "../utils/ids.js";
@@ -21,12 +21,13 @@ export async function runOverdueAlerts(date = today()) {
       SELECT pg_try_advisory_xact_lock(${LOCK_KEY}) AS locked`;
     if (!lock?.locked) return { created: 0, skipped: true };
 
-    const { customers, items, payments } = await loadCore(undefined, tx);
+    const { customers, items, payments, prior } = await loadCurrent(date, undefined, tx);
     const d = deriveAll(
       items,
       payments,
       customers.map((c) => c.id),
       date,
+      prior,
     );
     const rows = customers.flatMap((c) => {
       const a = d.customers.get(c.id)!;
@@ -45,14 +46,16 @@ export async function runOverdueAlerts(date = today()) {
   });
 }
 
-export function startOverdueJob() {
-  if (!env.OVERDUE_ALERTS_ENABLED || env.NODE_ENV === "test") return null;
-  if (!cron.validate(env.OVERDUE_CRON)) {
-    logger.error({ cron: env.OVERDUE_CRON }, "Invalid OVERDUE_CRON; overdue alerts disabled");
+/** `expression` overrides OVERDUE_CRON and forces the job on (used by tests with a per-second schedule). */
+export function startOverdueJob(opts: { expression?: string } = {}) {
+  if (!opts.expression && (!env.OVERDUE_ALERTS_ENABLED || env.NODE_ENV === "test")) return null;
+  const expression = opts.expression ?? env.OVERDUE_CRON;
+  if (!cron.validate(expression)) {
+    logger.error({ cron: expression }, "Invalid OVERDUE_CRON; overdue alerts disabled");
     return null;
   }
   const task = cron.schedule(
-    env.OVERDUE_CRON,
+    expression,
     () => {
       runOverdueAlerts()
         .then((r) => logger.info(r, "overdue alerts run"))
@@ -60,6 +63,6 @@ export function startOverdueJob() {
     },
     { timezone: env.APP_TZ },
   );
-  logger.info({ cron: env.OVERDUE_CRON, tz: env.APP_TZ }, "overdue alert job scheduled");
+  logger.info({ cron: expression, tz: env.APP_TZ }, "overdue alert job scheduled");
   return task;
 }

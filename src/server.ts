@@ -18,7 +18,10 @@ function shutdown(signal: string) {
   void overdueJob?.stop();
   setTimeout(() => process.exit(1), 10_000).unref();
   server.close(() => {
-    void prisma.$disconnect().finally(() => process.exit(0));
+    void prisma.$disconnect().finally(() => {
+      logger.info("shutdown complete");
+      process.exit(0);
+    });
   });
 }
 process.on("SIGINT", () => shutdown("SIGINT"));
