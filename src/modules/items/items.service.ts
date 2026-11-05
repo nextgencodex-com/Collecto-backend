@@ -17,15 +17,26 @@ export async function create(i: {
   period: number;
   amount: number;
   start: string;
-  riderId: number;
+  riderId?: number;
 }) {
   if (paise(i.amount) > paise(i.price))
     throw new HttpError(422, "Amount per payment must be more than 0 and not more than the price.");
-  if (!(await customers.findById(i.customerId))) throw new HttpError(404, "Customer not found.");
+  const customer = await customers.findById(i.customerId);
+  if (!customer) throw new HttpError(404, "Customer not found.");
   const product = await products.find(i.code);
   if (!product) throw new HttpError(422, "Select a product.");
-  const rider = await riders.findRider(i.riderId);
-  if (!rider || !rider.active) throw new HttpError(422, "Assign an active rider.");
+  // An item always belongs to its customer's rider (collections, closings and reports all assume it).
+  if (i.riderId !== undefined && i.riderId !== customer.riderId)
+    throw new HttpError(
+      422,
+      "The item's rider must be the customer's rider. Reassign the customer first.",
+    );
+  const rider = await riders.findRider(customer.riderId);
+  if (!rider || !rider.active)
+    throw new HttpError(
+      422,
+      "This customer's rider is inactive. Reassign the customer to an active rider first.",
+    );
 
   const item = await inTransaction(async (tx) => {
     if (!(await products.takeOne(i.code, tx)))
@@ -33,7 +44,7 @@ export async function create(i: {
     return repo.create(
       {
         customerId: i.customerId,
-        riderId: i.riderId,
+        riderId: customer.riderId,
         code: product.code,
         name: product.name,
         price: dec(paise(i.price)),

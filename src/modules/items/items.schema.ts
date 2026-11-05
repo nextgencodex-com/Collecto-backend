@@ -16,7 +16,8 @@ export const createItemBody = z.object({
     .max(600),
   amount: money("Amount per payment must be more than 0 and not more than the price."),
   start: isoDate("Choose a start date."),
-  riderId: prefixedId(riderId, "Assign a rider."),
+  /** Optional: an item always belongs to its customer's rider; if given it must match. */
+  riderId: prefixedId(riderId, "Assign a rider.").optional(),
 });
 
 export const listItemsQuery = z.object({
