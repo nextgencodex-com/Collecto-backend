@@ -3,6 +3,8 @@ import { env } from "../../config/env.js";
 import type { User } from "../../generated/prisma/client.js";
 import { HttpError } from "../../utils/http.js";
 import { riderId } from "../../utils/ids.js";
+import { formatPhone } from "../../utils/phone.js";
+import { photoUrl } from "../../utils/uploads.js";
 import { hashPassword, verifyPassword } from "../../utils/password.js";
 import type { LoginInput } from "./auth.schema.js";
 import * as repo from "./auth.repository.js";
@@ -25,7 +27,7 @@ export function toUserDto(u: User) {
     name: u.name,
     username: u.username,
     phone: u.phone,
-    photoUrl: u.photoPath ? `${env.UPLOADS_PUBLIC_URL.replace(/\/$/, "")}/${u.photoPath}` : null,
+    photoUrl: photoUrl(u.photoPath) || null,
   };
 }
 
@@ -34,12 +36,6 @@ export const toSession = (u: User) =>
   u.role === "OWNER"
     ? { role: "owner" as const }
     : { role: "rider" as const, riderId: riderId.format(u.id) };
-
-/** "0772458812" / "077 245 8812" -> "077 245 8812"; null if it isn't a 10-digit number. */
-const formatPhone = (raw: string) => {
-  const d = raw.replace(/\D/g, "");
-  return d.length === 10 ? d.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3") : null;
-};
 
 const refreshExpiry = () => new Date(Date.now() + env.REFRESH_TTL_DAYS * 86_400_000);
 

@@ -1,5 +1,7 @@
 // The database uses integer keys; the API exposes the prefixed ids the frontend already uses.
-const make = (prefix: string) => ({
+export type IdCodec = { format: (n: number) => string; parse: (s: string) => number | null };
+
+const make = (prefix: string): IdCodec => ({
   format: (n: number) => `${prefix}${n}`,
   /** Parses "C101" -> 101; returns null for anything else. */
   parse: (s: string): number | null => {
