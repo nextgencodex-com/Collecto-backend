@@ -1,0 +1,2735 @@
+{
+  "daily {\"date\":\"2026-10-13\"}": {
+    "title": "Daily collection report · 13 Oct 2026",
+    "cols": [
+      {
+        "v": "Transaction"
+      },
+      {
+        "v": "Time"
+      },
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "Item"
+      },
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Amount",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "TX261013-0117"
+        },
+        {
+          "v": "09:18"
+        },
+        {
+          "v": "Ruwan Bandara"
+        },
+        {
+          "v": "GC-200 · Gas Cooker 2-Burner"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "TX261013-0118"
+        },
+        {
+          "v": "09:26"
+        },
+        {
+          "v": "Nadeesha Gunawardena"
+        },
+        {
+          "v": "FR-250 · Refrigerator 250L"
+        },
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "Rs. 10,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "TX261013-0119"
+        },
+        {
+          "v": "09:38"
+        },
+        {
+          "v": "Ishara Peris"
+        },
+        {
+          "v": "GC-200 · Gas Cooker 2-Burner"
+        },
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        }
+      ]
+    ],
+    "summary": [
+      {
+        "label": "Expected",
+        "value": "Rs. 30,700"
+      },
+      {
+        "label": "Collected",
+        "value": "Rs. 12,000"
+      },
+      {
+        "label": "Difference",
+        "value": "Rs. -18,700"
+      },
+      {
+        "label": "Payments",
+        "value": "3"
+      }
+    ]
+  },
+  "rider {\"date\":\"2026-10-13\"}": {
+    "title": "Rider performance · 13 Oct 2026",
+    "cols": [
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Area"
+      },
+      {
+        "v": "Customers",
+        "right": true
+      },
+      {
+        "v": "Expected",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      },
+      {
+        "v": "Rate",
+        "right": true
+      },
+      {
+        "v": "Month to date",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Maharagama, Nugegoda"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 17,600",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        },
+        {
+          "v": "6%",
+          "right": true
+        },
+        {
+          "v": "Rs. 3,400",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "Kottawa, Homagama"
+        },
+        {
+          "v": "4",
+          "right": true
+        },
+        {
+          "v": "Rs. 12,100",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,000",
+          "right": true
+        },
+        {
+          "v": "83%",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "Piliyandala"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        },
+        {
+          "v": "100%",
+          "right": true
+        },
+        {
+          "v": "Rs. 2,000",
+          "right": true
+        }
+      ]
+    ],
+    "summary": []
+  },
+  "daily {\"date\":\"2026-10-12\"}": {
+    "title": "Daily collection report · 12 Oct 2026",
+    "cols": [
+      {
+        "v": "Transaction"
+      },
+      {
+        "v": "Time"
+      },
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "Item"
+      },
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Amount",
+        "right": true
+      }
+    ],
+    "rows": [],
+    "summary": [
+      {
+        "label": "Expected",
+        "value": "Rs. 10,300"
+      },
+      {
+        "label": "Collected",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Difference",
+        "value": "Rs. -10,300"
+      },
+      {
+        "label": "Payments",
+        "value": "0"
+      }
+    ]
+  },
+  "rider {\"date\":\"2026-10-12\"}": {
+    "title": "Rider performance · 12 Oct 2026",
+    "cols": [
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Area"
+      },
+      {
+        "v": "Customers",
+        "right": true
+      },
+      {
+        "v": "Expected",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      },
+      {
+        "v": "Rate",
+        "right": true
+      },
+      {
+        "v": "Month to date",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Maharagama, Nugegoda"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 9,100",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 2,400",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "Kottawa, Homagama"
+        },
+        {
+          "v": "4",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,200",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "Piliyandala"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        }
+      ]
+    ],
+    "summary": []
+  },
+  "daily {\"date\":\"2026-10-06\"}": {
+    "title": "Daily collection report · 6 Oct 2026",
+    "cols": [
+      {
+        "v": "Transaction"
+      },
+      {
+        "v": "Time"
+      },
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "Item"
+      },
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Amount",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "TX261006-0112"
+        },
+        {
+          "v": "11:14"
+        },
+        {
+          "v": "Ruwan Bandara"
+        },
+        {
+          "v": "GC-200 · Gas Cooker 2-Burner"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "TX261006-0113"
+        },
+        {
+          "v": "12:41"
+        },
+        {
+          "v": "Kumudu Dissanayake"
+        },
+        {
+          "v": "RC-220 · Rice Cooker 2.2L"
+        },
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "TX261006-0114"
+        },
+        {
+          "v": "14:39"
+        },
+        {
+          "v": "Ishara Peris"
+        },
+        {
+          "v": "GC-200 · Gas Cooker 2-Burner"
+        },
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "TX261006-0115"
+        },
+        {
+          "v": "14:59"
+        },
+        {
+          "v": "Saman Kumara"
+        },
+        {
+          "v": "IR-101 · Steam Iron"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Rs. 400",
+          "right": true
+        }
+      ]
+    ],
+    "summary": [
+      {
+        "label": "Expected",
+        "value": "Rs. 13,200"
+      },
+      {
+        "label": "Collected",
+        "value": "Rs. 2,900"
+      },
+      {
+        "label": "Difference",
+        "value": "Rs. -10,300"
+      },
+      {
+        "label": "Payments",
+        "value": "4"
+      }
+    ]
+  },
+  "rider {\"date\":\"2026-10-06\"}": {
+    "title": "Rider performance · 6 Oct 2026",
+    "cols": [
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Area"
+      },
+      {
+        "v": "Customers",
+        "right": true
+      },
+      {
+        "v": "Expected",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      },
+      {
+        "v": "Rate",
+        "right": true
+      },
+      {
+        "v": "Month to date",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Maharagama, Nugegoda"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,500",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,400",
+          "right": true
+        },
+        {
+          "v": "13%",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,900",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "Kottawa, Homagama"
+        },
+        {
+          "v": "4",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,700",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        },
+        {
+          "v": "29%",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "Piliyandala"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        },
+        {
+          "v": "100%",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,000",
+          "right": true
+        }
+      ]
+    ],
+    "summary": []
+  },
+  "daily {\"date\":\"2026-08-14\"}": {
+    "title": "Daily collection report · 14 Aug 2026",
+    "cols": [
+      {
+        "v": "Transaction"
+      },
+      {
+        "v": "Time"
+      },
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "Item"
+      },
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Amount",
+        "right": true
+      }
+    ],
+    "rows": [],
+    "summary": [
+      {
+        "label": "Expected",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Collected",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Difference",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Payments",
+        "value": "0"
+      }
+    ]
+  },
+  "rider {\"date\":\"2026-08-14\"}": {
+    "title": "Rider performance · 14 Aug 2026",
+    "cols": [
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Area"
+      },
+      {
+        "v": "Customers",
+        "right": true
+      },
+      {
+        "v": "Expected",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      },
+      {
+        "v": "Rate",
+        "right": true
+      },
+      {
+        "v": "Month to date",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Maharagama, Nugegoda"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 12,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "Kottawa, Homagama"
+        },
+        {
+          "v": "4",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,800",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "Piliyandala"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 2,200",
+          "right": true
+        }
+      ]
+    ],
+    "summary": []
+  },
+  "daily {\"date\":\"2026-01-06\"}": {
+    "title": "Daily collection report · 6 Jan 2026",
+    "cols": [
+      {
+        "v": "Transaction"
+      },
+      {
+        "v": "Time"
+      },
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "Item"
+      },
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Amount",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "TX260106-0001"
+        },
+        {
+          "v": "15:34"
+        },
+        {
+          "v": "Pradeep Rathnayake"
+        },
+        {
+          "v": "IR-101 · Steam Iron"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Rs. 400",
+          "right": true
+        }
+      ]
+    ],
+    "summary": [
+      {
+        "label": "Expected",
+        "value": "Rs. 400"
+      },
+      {
+        "label": "Collected",
+        "value": "Rs. 400"
+      },
+      {
+        "label": "Difference",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Payments",
+        "value": "1"
+      }
+    ]
+  },
+  "rider {\"date\":\"2026-01-06\"}": {
+    "title": "Rider performance · 6 Jan 2026",
+    "cols": [
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Area"
+      },
+      {
+        "v": "Customers",
+        "right": true
+      },
+      {
+        "v": "Expected",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      },
+      {
+        "v": "Rate",
+        "right": true
+      },
+      {
+        "v": "Month to date",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Maharagama, Nugegoda"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 400",
+          "right": true
+        },
+        {
+          "v": "Rs. 400",
+          "right": true
+        },
+        {
+          "v": "100%",
+          "right": true
+        },
+        {
+          "v": "Rs. 400",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "Kottawa, Homagama"
+        },
+        {
+          "v": "4",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "Piliyandala"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ]
+    ],
+    "summary": []
+  },
+  "daily {\"date\":\"2025-12-01\"}": {
+    "title": "Daily collection report · 1 Dec 2025",
+    "cols": [
+      {
+        "v": "Transaction"
+      },
+      {
+        "v": "Time"
+      },
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "Item"
+      },
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Amount",
+        "right": true
+      }
+    ],
+    "rows": [],
+    "summary": [
+      {
+        "label": "Expected",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Collected",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Difference",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Payments",
+        "value": "0"
+      }
+    ]
+  },
+  "rider {\"date\":\"2025-12-01\"}": {
+    "title": "Rider performance · 1 Dec 2025",
+    "cols": [
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Area"
+      },
+      {
+        "v": "Customers",
+        "right": true
+      },
+      {
+        "v": "Expected",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      },
+      {
+        "v": "Rate",
+        "right": true
+      },
+      {
+        "v": "Month to date",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Maharagama, Nugegoda"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "Kottawa, Homagama"
+        },
+        {
+          "v": "4",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "Piliyandala"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ]
+    ],
+    "summary": []
+  },
+  "daily {\"date\":\"2026-12-25\"}": {
+    "title": "Daily collection report · 25 Dec 2026",
+    "cols": [
+      {
+        "v": "Transaction"
+      },
+      {
+        "v": "Time"
+      },
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "Item"
+      },
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Amount",
+        "right": true
+      }
+    ],
+    "rows": [],
+    "summary": [
+      {
+        "label": "Expected",
+        "value": "Rs. 142,700"
+      },
+      {
+        "label": "Collected",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Difference",
+        "value": "Rs. -142,700"
+      },
+      {
+        "label": "Payments",
+        "value": "0"
+      }
+    ]
+  },
+  "rider {\"date\":\"2026-12-25\"}": {
+    "title": "Rider performance · 25 Dec 2026",
+    "cols": [
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Area"
+      },
+      {
+        "v": "Customers",
+        "right": true
+      },
+      {
+        "v": "Expected",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      },
+      {
+        "v": "Rate",
+        "right": true
+      },
+      {
+        "v": "Month to date",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "Maharagama, Nugegoda"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 62,800",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "Kottawa, Homagama"
+        },
+        {
+          "v": "4",
+          "right": true
+        },
+        {
+          "v": "Rs. 51,900",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "Piliyandala"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 28,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "0%",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ]
+    ],
+    "summary": []
+  },
+  "monthly {\"month\":\"2026-10\"}": {
+    "title": "Monthly collection report · October 2026",
+    "cols": [
+      {
+        "v": "Date"
+      },
+      {
+        "v": "Payments",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "1 Oct 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "6 Oct 2026"
+        },
+        {
+          "v": "4",
+          "right": true
+        },
+        {
+          "v": "Rs. 2,900",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "8 Oct 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "13 Oct 2026"
+        },
+        {
+          "v": "3",
+          "right": true
+        },
+        {
+          "v": "Rs. 12,000",
+          "right": true
+        }
+      ]
+    ],
+    "summary": [
+      {
+        "label": "Collected",
+        "value": "Rs. 15,900"
+      },
+      {
+        "label": "Installments due",
+        "value": "38"
+      },
+      {
+        "label": "Completed",
+        "value": "9"
+      },
+      {
+        "label": "Overdue",
+        "value": "4"
+      }
+    ]
+  },
+  "monthly {\"month\":\"2026-09\"}": {
+    "title": "Monthly collection report · September 2026",
+    "cols": [
+      {
+        "v": "Date"
+      },
+      {
+        "v": "Payments",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "1 Sept 2026"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 4,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "3 Sept 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "8 Sept 2026"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 4,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "10 Sept 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "13 Sept 2026"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 16,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "15 Sept 2026"
+        },
+        {
+          "v": "7",
+          "right": true
+        },
+        {
+          "v": "Rs. 4,500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "17 Sept 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "20 Sept 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 8,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "22 Sept 2026"
+        },
+        {
+          "v": "5",
+          "right": true
+        },
+        {
+          "v": "Rs. 3,500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "24 Sept 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "29 Sept 2026"
+        },
+        {
+          "v": "6",
+          "right": true
+        },
+        {
+          "v": "Rs. 4,000",
+          "right": true
+        }
+      ]
+    ],
+    "summary": [
+      {
+        "label": "Collected",
+        "value": "Rs. 46,000"
+      },
+      {
+        "label": "Installments due",
+        "value": "40"
+      },
+      {
+        "label": "Completed",
+        "value": "37"
+      },
+      {
+        "label": "Overdue",
+        "value": "3"
+      }
+    ]
+  },
+  "monthly {\"month\":\"2026-02\"}": {
+    "title": "Monthly collection report · February 2026",
+    "cols": [
+      {
+        "v": "Date"
+      },
+      {
+        "v": "Payments",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "3 Feb 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 400",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "10 Feb 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 400",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "13 Feb 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "17 Feb 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 400",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "24 Feb 2026"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 400",
+          "right": true
+        }
+      ]
+    ],
+    "summary": [
+      {
+        "label": "Collected",
+        "value": "Rs. 11,600"
+      },
+      {
+        "label": "Installments due",
+        "value": "5"
+      },
+      {
+        "label": "Completed",
+        "value": "5"
+      },
+      {
+        "label": "Overdue",
+        "value": "0"
+      }
+    ]
+  },
+  "monthly {\"month\":\"2026-12\"}": {
+    "title": "Monthly collection report · December 2026",
+    "cols": [
+      {
+        "v": "Date"
+      },
+      {
+        "v": "Payments",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      }
+    ],
+    "rows": [],
+    "summary": [
+      {
+        "label": "Collected",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Installments due",
+        "value": "28"
+      },
+      {
+        "label": "Completed",
+        "value": "0"
+      },
+      {
+        "label": "Overdue",
+        "value": "0"
+      }
+    ]
+  },
+  "monthly {\"month\":\"2025-06\"}": {
+    "title": "Monthly collection report · June 2025",
+    "cols": [
+      {
+        "v": "Date"
+      },
+      {
+        "v": "Payments",
+        "right": true
+      },
+      {
+        "v": "Collected",
+        "right": true
+      }
+    ],
+    "rows": [],
+    "summary": [
+      {
+        "label": "Collected",
+        "value": "Rs. 0"
+      },
+      {
+        "label": "Installments due",
+        "value": "0"
+      },
+      {
+        "label": "Completed",
+        "value": "0"
+      },
+      {
+        "label": "Overdue",
+        "value": "0"
+      }
+    ]
+  },
+  "person {}": {
+    "title": "Person-wise outstanding report",
+    "cols": [
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "NIC"
+      },
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Active items",
+        "right": true
+      },
+      {
+        "v": "Total",
+        "right": true
+      },
+      {
+        "v": "Paid",
+        "right": true
+      },
+      {
+        "v": "Balance",
+        "right": true
+      },
+      {
+        "v": "Overdue",
+        "right": true
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "Lahiru Madushanka"
+        },
+        {
+          "v": "200012503378"
+        },
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 81,600",
+          "right": true
+        },
+        {
+          "v": "Rs. 9,600",
+          "right": true
+        },
+        {
+          "v": "Rs. 72,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Dilani Fernando"
+        },
+        {
+          "v": "917654321V"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 81,600",
+          "right": true
+        },
+        {
+          "v": "Rs. 33,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 48,600",
+          "right": true
+        },
+        {
+          "v": "Rs. 600",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Malini Senanayake"
+        },
+        {
+          "v": "197562004413"
+        },
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 96,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 48,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 48,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Nadeesha Gunawardena"
+        },
+        {
+          "v": "199661903345"
+        },
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 120,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 90,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 30,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Chamari Wijesinghe"
+        },
+        {
+          "v": "886540127V"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 48,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 24,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 24,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 8,000",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Ishara Peris"
+        },
+        {
+          "v": "945230776V"
+        },
+        {
+          "v": "Tharindu Jayasinghe"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 24,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 14,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Sunil Abeywickrama"
+        },
+        {
+          "v": "197011209876"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 12,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        },
+        {
+          "v": "Rs. 11,500",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Kumudu Dissanayake"
+        },
+        {
+          "v": "199870112906"
+        },
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 12,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 2,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Ruwan Bandara"
+        },
+        {
+          "v": "199203118842"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 24,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 15,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 9,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Pradeep Rathnayake"
+        },
+        {
+          "v": "199507602231"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 14,400",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,400",
+          "right": true
+        },
+        {
+          "v": "Rs. 4,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Saman Kumara"
+        },
+        {
+          "v": "198812304567"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 6,400",
+          "right": true
+        },
+        {
+          "v": "Rs. 3,200",
+          "right": true
+        },
+        {
+          "v": "Rs. 3,200",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        }
+      ],
+      [
+        {
+          "v": "Asanka Herath"
+        },
+        {
+          "v": "893120558V"
+        },
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 6,400",
+          "right": true
+        },
+        {
+          "v": "Rs. 4,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 2,400",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,200",
+          "right": true
+        }
+      ]
+    ],
+    "summary": [
+      {
+        "label": "Customers with balance",
+        "value": "12"
+      },
+      {
+        "label": "Total outstanding",
+        "value": "Rs. 276,700"
+      },
+      {
+        "label": "Total overdue",
+        "value": "Rs. 10,300"
+      }
+    ]
+  },
+  "item {}": {
+    "title": "Item-wise balance report",
+    "cols": [
+      {
+        "v": "Item"
+      },
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "Price",
+        "right": true
+      },
+      {
+        "v": "Paid",
+        "right": true
+      },
+      {
+        "v": "Balance",
+        "right": true
+      },
+      {
+        "v": "Next due"
+      },
+      {
+        "v": "Status"
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "IR-101 · Steam Iron"
+        },
+        {
+          "v": "Saman Kumara"
+        },
+        {
+          "v": "Rs. 6,400",
+          "right": true
+        },
+        {
+          "v": "Rs. 3,200",
+          "right": true
+        },
+        {
+          "v": "Rs. 3,200",
+          "right": true
+        },
+        {
+          "v": "13 Oct 2026"
+        },
+        {
+          "v": "Due today"
+        }
+      ],
+      [
+        {
+          "v": "TV-320 · 32\" LED TV"
+        },
+        {
+          "v": "Dilani Fernando"
+        },
+        {
+          "v": "Rs. 72,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 30,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 42,000",
+          "right": true
+        },
+        {
+          "v": "13 Oct 2026"
+        },
+        {
+          "v": "Due today"
+        }
+      ],
+      [
+        {
+          "v": "FN-160 · Pedestal Fan"
+        },
+        {
+          "v": "Dilani Fernando"
+        },
+        {
+          "v": "Rs. 9,600",
+          "right": true
+        },
+        {
+          "v": "Rs. 3,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 6,600",
+          "right": true
+        },
+        {
+          "v": "6 Oct 2026"
+        },
+        {
+          "v": "Overdue"
+        }
+      ],
+      [
+        {
+          "v": "GC-200 · Gas Cooker 2-Burner"
+        },
+        {
+          "v": "Ruwan Bandara"
+        },
+        {
+          "v": "Rs. 24,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 15,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 9,000",
+          "right": true
+        },
+        {
+          "v": "20 Oct 2026"
+        },
+        {
+          "v": "Paid"
+        }
+      ],
+      [
+        {
+          "v": "PH-A15 · Smartphone A15"
+        },
+        {
+          "v": "Chamari Wijesinghe"
+        },
+        {
+          "v": "Rs. 48,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 24,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 24,000",
+          "right": true
+        },
+        {
+          "v": "5 Sept 2026"
+        },
+        {
+          "v": "Overdue"
+        }
+      ],
+      [
+        {
+          "v": "BL-300 · Blender 3-Jar"
+        },
+        {
+          "v": "Pradeep Rathnayake"
+        },
+        {
+          "v": "Rs. 8,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 4,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 4,000",
+          "right": true
+        },
+        {
+          "v": "15 Oct 2026"
+        },
+        {
+          "v": "Paid"
+        }
+      ],
+      [
+        {
+          "v": "RC-220 · Rice Cooker 2.2L"
+        },
+        {
+          "v": "Sunil Abeywickrama"
+        },
+        {
+          "v": "Rs. 12,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        },
+        {
+          "v": "Rs. 11,500",
+          "right": true
+        },
+        {
+          "v": "6 Oct 2026"
+        },
+        {
+          "v": "Overdue"
+        }
+      ],
+      [
+        {
+          "v": "FR-250 · Refrigerator 250L"
+        },
+        {
+          "v": "Nadeesha Gunawardena"
+        },
+        {
+          "v": "Rs. 120,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 90,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 30,000",
+          "right": true
+        },
+        {
+          "v": "13 Nov 2026"
+        },
+        {
+          "v": "Paid"
+        }
+      ],
+      [
+        {
+          "v": "IR-101 · Steam Iron"
+        },
+        {
+          "v": "Asanka Herath"
+        },
+        {
+          "v": "Rs. 6,400",
+          "right": true
+        },
+        {
+          "v": "Rs. 4,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 2,400",
+          "right": true
+        },
+        {
+          "v": "22 Sept 2026"
+        },
+        {
+          "v": "Overdue"
+        }
+      ],
+      [
+        {
+          "v": "WM-700 · Washing Machine 7kg"
+        },
+        {
+          "v": "Malini Senanayake"
+        },
+        {
+          "v": "Rs. 96,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 48,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 48,000",
+          "right": true
+        },
+        {
+          "v": "20 Oct 2026"
+        },
+        {
+          "v": "Paid"
+        }
+      ],
+      [
+        {
+          "v": "RC-220 · Rice Cooker 2.2L"
+        },
+        {
+          "v": "Kumudu Dissanayake"
+        },
+        {
+          "v": "Rs. 12,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 2,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,000",
+          "right": true
+        },
+        {
+          "v": "13 Oct 2026"
+        },
+        {
+          "v": "Due today"
+        }
+      ],
+      [
+        {
+          "v": "FN-160 · Pedestal Fan"
+        },
+        {
+          "v": "Lahiru Madushanka"
+        },
+        {
+          "v": "Rs. 9,600",
+          "right": true
+        },
+        {
+          "v": "Rs. 9,600",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "—"
+        },
+        {
+          "v": "Completed"
+        }
+      ],
+      [
+        {
+          "v": "TV-320 · 32\" LED TV"
+        },
+        {
+          "v": "Lahiru Madushanka"
+        },
+        {
+          "v": "Rs. 72,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "Rs. 72,000",
+          "right": true
+        },
+        {
+          "v": "20 Oct 2026"
+        },
+        {
+          "v": "Upcoming"
+        }
+      ],
+      [
+        {
+          "v": "GC-200 · Gas Cooker 2-Burner"
+        },
+        {
+          "v": "Ishara Peris"
+        },
+        {
+          "v": "Rs. 24,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 10,000",
+          "right": true
+        },
+        {
+          "v": "Rs. 14,000",
+          "right": true
+        },
+        {
+          "v": "20 Oct 2026"
+        },
+        {
+          "v": "Paid"
+        }
+      ],
+      [
+        {
+          "v": "IR-101 · Steam Iron"
+        },
+        {
+          "v": "Pradeep Rathnayake"
+        },
+        {
+          "v": "Rs. 6,400",
+          "right": true
+        },
+        {
+          "v": "Rs. 6,400",
+          "right": true
+        },
+        {
+          "v": "Rs. 0",
+          "right": true
+        },
+        {
+          "v": "—"
+        },
+        {
+          "v": "Completed"
+        }
+      ]
+    ],
+    "summary": [
+      {
+        "label": "Items",
+        "value": "15"
+      },
+      {
+        "label": "Completed",
+        "value": "2"
+      },
+      {
+        "label": "Outstanding value",
+        "value": "Rs. 276,700"
+      }
+    ]
+  },
+  "overdue {}": {
+    "title": "Overdue installments report",
+    "cols": [
+      {
+        "v": "Customer"
+      },
+      {
+        "v": "Phone"
+      },
+      {
+        "v": "Item"
+      },
+      {
+        "v": "Rider"
+      },
+      {
+        "v": "Missed",
+        "right": true
+      },
+      {
+        "v": "Overdue amount",
+        "right": true
+      },
+      {
+        "v": "Oldest due"
+      }
+    ],
+    "rows": [
+      [
+        {
+          "v": "Chamari Wijesinghe"
+        },
+        {
+          "v": "072 880 4513"
+        },
+        {
+          "v": "PH-A15 · Smartphone A15"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "2",
+          "right": true
+        },
+        {
+          "v": "Rs. 8,000",
+          "right": true
+        },
+        {
+          "v": "5 Sept 2026"
+        }
+      ],
+      [
+        {
+          "v": "Asanka Herath"
+        },
+        {
+          "v": "071 225 7789"
+        },
+        {
+          "v": "IR-101 · Steam Iron"
+        },
+        {
+          "v": "Nimal Silva"
+        },
+        {
+          "v": "3",
+          "right": true
+        },
+        {
+          "v": "Rs. 1,200",
+          "right": true
+        },
+        {
+          "v": "22 Sept 2026"
+        }
+      ],
+      [
+        {
+          "v": "Dilani Fernando"
+        },
+        {
+          "v": "071 667 2108"
+        },
+        {
+          "v": "FN-160 · Pedestal Fan"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 600",
+          "right": true
+        },
+        {
+          "v": "6 Oct 2026"
+        }
+      ],
+      [
+        {
+          "v": "Sunil Abeywickrama"
+        },
+        {
+          "v": "070 455 1902"
+        },
+        {
+          "v": "RC-220 · Rice Cooker 2.2L"
+        },
+        {
+          "v": "Kasun Perera"
+        },
+        {
+          "v": "1",
+          "right": true
+        },
+        {
+          "v": "Rs. 500",
+          "right": true
+        },
+        {
+          "v": "6 Oct 2026"
+        }
+      ]
+    ],
+    "summary": [
+      {
+        "label": "Overdue items",
+        "value": "4"
+      },
+      {
+        "label": "Overdue amount",
+        "value": "Rs. 10,300"
+      }
+    ]
+  }
+}
