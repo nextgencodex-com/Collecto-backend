@@ -1,21 +1,27 @@
-// Demo data: a port of the frontend's buildSeed() (Collecto-frontend/src/lib/seed.ts).
-// The prototype's dates are anchored on 2026-10-13; every date here is shifted so the demo
-// is "as of" the current day (or APP_TODAY), keeping the same overdue/due/paid situations.
-// DEV ONLY: truncates every table. Refuses to run with NODE_ENV=production.
+// Demo data: a port of the frontend prototype's buildSeed() (Collecto-frontend/src/lib/seed.ts, now removed).
+//
+// The prototype is anchored on 2026-10-13. To make the demo "as of" any other day we do not just shift
+// every date (that breaks monthly plans, whose due day-of-month matters); instead each plan is re-anchored
+// so it is in the same *situation* relative to today as in the prototype: the same number of instalments
+// elapsed and the same number of days since the last one fell due. That keeps the prototype's pattern
+// (who is overdue, due today, paid today, up to date, upcoming) on any date.
+//
+// DEV ONLY: seedDatabase() truncates every table. Refuses to run with NODE_ENV=production.
 import { randomUUID } from "node:crypto";
 import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
-import { env } from "../config/env.js";
 import { prisma as defaultPrisma } from "../config/database.js";
+import { env } from "../config/env.js";
 import {
   addDays,
+  addMonths,
   cumulativePaise,
   daysBetween,
   fromPaise,
   schedule,
   type Freq,
 } from "../domain/schedule.js";
-import { toDbDate, today as todayFn } from "../utils/dates.js";
+import { atLocal, toDbDate, today as todayFn } from "../utils/dates.js";
 import { hashPassword } from "../utils/password.js";
 
 type Db = typeof defaultPrisma;
@@ -198,9 +204,134 @@ const SPEC: [number, string, string, number, number][] = [
   [4, "IR-101", "2026-01-06", 0, 0],
 ];
 
+/**
+ * Start date that puts a plan in the same situation on `today` as the prototype plan was on DEMO_BASE:
+ * same number of instalments already due, and the last of them fell due the same number of days ago.
+ * Plans that had not started yet keep the same distance into the future.
+ */
+export function anchoredStart(
+  plan: { price: number; amount: number; freq: Freq; start: string },
+  today: string,
+): string {
+  const dates = schedule(plan);
+  const elapsed = dates.filter((d) => d <= DEMO_BASE).length;
+  if (elapsed === 0) return addDays(today, daysBetween(DEMO_BASE, plan.start));
+  const daysSinceLastDue = daysBetween(dates[elapsed - 1]!, DEMO_BASE);
+  const lastDue = addDays(today, -daysSinceLastDue);
+  if (plan.freq === "WEEKLY") return addDays(lastDue, -7 * (elapsed - 1));
+
+  // Monthly: the due day-of-month is that of `lastDue`. Walk back `elapsed - 1` months to a month that
+  // actually has that day (e.g. never "31 April"), otherwise the clamped date would drift off the pattern.
+  const day = Number(lastDue.slice(8));
+  let back = elapsed - 1;
+  for (;;) {
+    const first = addMonths(lastDue.slice(0, 8) + "01", -back);
+    const monthDays = Number(addDays(addMonths(first, 1), -1).slice(8));
+    if (day <= monthDays) return first.slice(0, 8) + pad(day);
+    back++;
+  }
+}
+
+export interface DemoItem {
+  id: number;
+  customerId: number;
+  riderId: number;
+  code: string;
+  name: string;
+  price: number;
+  freq: Freq;
+  amount: number;
+  period: number;
+  start: string;
+}
+export interface DemoPayment {
+  id: number;
+  txn: string;
+  itemId: number;
+  customerId: number;
+  riderId: number;
+  paise: number;
+  date: string;
+  time: string;
+  corrected: boolean;
+}
+
+/** The demo ledger as plain data for a given "today" (no database): items, payments, customer-since dates. */
+export function buildDemo(today: string) {
+  const items: DemoItem[] = SPEC.map(([ci, code, start0], k) => {
+    const p = PRODUCTS.find((x) => x[0] === code)!;
+    const plan = { price: p[4], amount: p[6], freq: p[5] as Freq, start: start0 };
+    return {
+      id: k + 1,
+      customerId: 101 + ci,
+      riderId: CUSTOMERS[ci]![5],
+      code,
+      name: p[1],
+      price: p[4],
+      freq: p[5] as Freq,
+      amount: p[6],
+      period: p[7],
+      start: anchoredStart(plan, today),
+    };
+  });
+
+  // Everything due before today is paid except the last `unpaid` instalments; some are also paid today.
+  const raw: Omit<DemoPayment, "id" | "txn" | "corrected">[] = [];
+  items.forEach((it, k) => {
+    const [, , , unpaid, paidToday] = SPEC[k]!;
+    const ds = schedule(it);
+    const cum = cumulativePaise(it);
+    const amt = (i: number) => cum(i) - (i ? cum(i - 1) : 0);
+    const before = ds.filter((d) => d < today);
+    for (let i = 0; i < before.length - unpaid; i++)
+      raw.push({
+        itemId: it.id,
+        customerId: it.customerId,
+        riderId: it.riderId,
+        paise: amt(i),
+        date: before[i]!,
+        time: pad(9 + ((i * 3 + k) % 8)) + ":" + pad((i * 17 + k * 11) % 60),
+      });
+    const ti = ds.indexOf(today);
+    if (paidToday && ti >= 0)
+      raw.push({
+        itemId: it.id,
+        customerId: it.customerId,
+        riderId: it.riderId,
+        paise: amt(ti),
+        date: today,
+        time: "09:" + pad(12 + k * 2),
+      });
+  });
+  raw.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+
+  // One historical correction (item 9, its first-but-older payment), as in the prototype's audit log.
+  const correctedAt = addDays(today, -28);
+  const payments: DemoPayment[] = raw.map((p, i) => ({
+    ...p,
+    id: i + 1,
+    txn: txnId(p.date, i + 1),
+    corrected: false,
+  }));
+  // the latest payment of item 9 dated 28 days ago or earlier (2026-09-15 in the prototype)
+  const corrected =
+    [...payments].reverse().find((p) => p.itemId === 9 && p.date <= correctedAt) ??
+    payments.find((p) => p.itemId === 9);
+  if (corrected) corrected.corrected = true;
+
+  const since = (ci: number) => {
+    const starts = items
+      .filter((i) => i.customerId === 101 + ci)
+      .map((i) => i.start)
+      .sort();
+    return starts[0] ? addDays(starts[0], -1) : today;
+  };
+  return { items, payments, corrected: corrected ?? null, since };
+}
+
 /** Copies the frontend's demo avatars into UPLOADS_DIR under random names; returns the stored name. */
-function importAvatar(file: string): string | null {
-  const src = path.resolve("..", "Collecto-frontend", "public", "images", "avatars", file);
+function importAvatar(dir: string, file: string): string | null {
+  const src = path.join(dir, file);
   if (!existsSync(src)) return null;
   mkdirSync(env.UPLOADS_DIR, { recursive: true });
   const name = `${randomUUID()}.jpg`;
@@ -208,10 +339,15 @@ function importAvatar(file: string): string | null {
   return name;
 }
 
-export async function seedDatabase(prisma: Db = defaultPrisma, today: string = todayFn()) {
+export async function seedDatabase(
+  prisma: Db = defaultPrisma,
+  today: string = todayFn(),
+  opts: { avatarsDir?: string } = {},
+) {
   if (env.NODE_ENV === "production") throw new Error("Refusing to seed in production");
-  const shift = daysBetween(DEMO_BASE, today);
-  const sh = (d: string) => addDays(d, shift);
+  const avatars =
+    opts.avatarsDir ?? path.resolve("..", "Collecto-frontend", "public", "images", "avatars");
+  const demo = buildDemo(today);
   const [ownerHash, riderHash] = await Promise.all([
     hashPassword("owner123"),
     hashPassword("1234"),
@@ -231,8 +367,8 @@ export async function seedDatabase(prisma: Db = defaultPrisma, today: string = t
   });
 
   const riderPhotos: Record<number, string | null> = {
-    1: importAvatar("rider-1.jpg"),
-    2: importAvatar("rider-2.jpg"),
+    1: importAvatar(avatars, "rider-1.jpg"),
+    2: importAvatar(avatars, "rider-2.jpg"),
     3: null,
   };
   for (const [id, name, phone, area, username] of RIDERS) {
@@ -249,15 +385,16 @@ export async function seedDatabase(prisma: Db = defaultPrisma, today: string = t
       },
     });
   }
+  // The owner is always id 0 (riders are 1..n), enforced by a CHECK constraint.
   const owner = await prisma.user.create({
     data: {
-      id: 4,
+      id: 0,
       role: "OWNER",
       username: "owner",
       email: "owner@collecto.lk",
       name: "Shop Owner",
       passwordHash: ownerHash,
-      photoPath: importAvatar("owner.jpg"),
+      photoPath: importAvatar(avatars, "owner.jpg"),
     },
   });
 
@@ -280,14 +417,8 @@ export async function seedDatabase(prisma: Db = defaultPrisma, today: string = t
     });
   }
 
-  // Customer "since" = day before their earliest item starts
-  const firstStart = (ci: number) =>
-    SPEC.filter((s) => s[0] === ci)
-      .map((s) => sh(s[2]))
-      .sort()[0];
   for (const [i, [name, nic, phone, address, city, riderId, dl, dg]] of CUSTOMERS.entries()) {
     const [lat, lng] = AREAS[city]!;
-    const start = firstStart(i);
     await prisma.customer.create({
       data: {
         id: 101 + i,
@@ -299,124 +430,80 @@ export async function seedDatabase(prisma: Db = defaultPrisma, today: string = t
         riderId,
         lat: +(lat + dl).toFixed(5),
         lng: +(lng + dg).toFixed(5),
-        photoPath: importAvatar(`customer-${101 + i}.jpg`),
-        since: toDbDate(start ? addDays(start, -1) : today),
+        photoPath: importAvatar(avatars, `customer-${101 + i}.jpg`),
+        since: toDbDate(demo.since(i)),
       },
     });
   }
 
-  const items = [] as {
-    id: number;
-    customerId: number;
-    riderId: number;
-    plan: { price: number; amount: number; freq: Freq; start: string };
-    unpaid: number;
-    paidToday: number;
-  }[];
-  for (const [k, [ci, code, start, unpaid, paidToday]] of SPEC.entries()) {
-    const p = PRODUCTS.find((x) => x[0] === code)!;
-    const c = CUSTOMERS[ci]!;
-    const item = { id: k + 1, customerId: 101 + ci, riderId: c[5] };
-    const plan = { price: p[4], amount: p[6], freq: p[5] as Freq, start: sh(start) };
+  for (const it of demo.items)
     await prisma.item.create({
       data: {
-        ...item,
-        code,
-        name: p[1],
-        price: plan.price,
-        freq: plan.freq,
-        amount: plan.amount,
-        period: p[7],
-        start: toDbDate(plan.start),
+        id: it.id,
+        customerId: it.customerId,
+        riderId: it.riderId,
+        code: it.code,
+        name: it.name,
+        price: it.price,
+        freq: it.freq,
+        amount: it.amount,
+        period: it.period,
+        start: toDbDate(it.start),
       },
     });
-    items.push({ ...item, plan, unpaid, paidToday });
-  }
 
-  // Payments: everything due before today is paid except the last `unpaid` instalments
-  const pays: {
-    itemId: number;
-    customerId: number;
-    riderId: number;
-    paise: number;
-    date: string;
-    time: string;
-  }[] = [];
-  items.forEach((it, k) => {
-    const ds = schedule(it.plan);
-    const cum = cumulativePaise(it.plan);
-    const amt = (i: number) => cum(i) - (i ? cum(i - 1) : 0);
-    const before = ds.filter((d) => d < today);
-    for (let i = 0; i < before.length - it.unpaid; i++)
-      pays.push({
-        itemId: it.id,
-        customerId: it.customerId,
-        riderId: it.riderId,
-        paise: amt(i),
-        date: before[i]!,
-        time: pad(9 + ((i * 3 + k) % 8)) + ":" + pad((i * 17 + k * 11) % 60),
-      });
-    const ti = ds.indexOf(today);
-    if (it.paidToday && ti >= 0)
-      pays.push({
-        itemId: it.id,
-        customerId: it.customerId,
-        riderId: it.riderId,
-        paise: amt(ti),
-        date: today,
-        time: "09:" + pad(12 + k * 2),
-      });
-  });
-  pays.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-
-  const corrected = pays.find((p) => p.itemId === 9 && p.date === sh("2026-09-15"));
   await prisma.payment.createMany({
-    data: pays.map((p, i) => ({
-      id: i + 1,
-      txn: txnId(p.date, i + 1),
+    data: demo.payments.map((p) => ({
+      id: p.id,
+      txn: p.txn,
       itemId: p.itemId,
       customerId: p.customerId,
       riderId: p.riderId,
       amount: money(p.paise),
       date: toDbDate(p.date),
       time: p.time,
-      status: p === corrected ? ("CORRECTED" as const) : ("COMPLETED" as const),
+      status: p.corrected ? ("CORRECTED" as const) : ("COMPLETED" as const),
     })),
   });
 
-  if (corrected) {
-    const name = CUSTOMERS[7]![0];
+  const c = demo.corrected;
+  if (c) {
     await prisma.auditEntry.create({
       data: {
-        at: new Date(`${corrected.date}T18:40:00+05:30`),
+        at: atLocal(c.date, "18:40"),
         userId: owner.id,
         action: "Payment amount corrected",
-        txn: txnId(corrected.date, pays.indexOf(corrected) + 1),
-        ref: name,
-        old: rs(corrected.paise * 10),
-        nw: rs(corrected.paise),
+        txn: c.txn,
+        ref: CUSTOMERS[7]![0],
+        old: rs(c.paise * 10),
+        nw: rs(c.paise),
         reason: "Rider entered an extra zero. Verified against the customer receipt.",
       },
     });
   }
 
-  const todays = pays.map((p, i) => ({ p, i })).filter(({ p }) => p.date === today);
+  const todays = demo.payments.filter((p) => p.date === today);
   await prisma.notification.createMany({
-    data: todays.map(({ p }, n) => ({
+    data: todays.map((p, n) => ({
       id: n + 1,
       userId: owner.id,
       type: "PAYMENT" as const,
       title: "Payment received",
       text: `${rs(p.paise)} from ${CUSTOMERS[p.customerId - 101]![0]} · ${RIDERS[p.riderId - 1]![1]}`,
-      at: new Date(`${p.date}T${p.time}:00+05:30`),
+      at: atLocal(p.date, p.time),
     })),
   });
 
-  // Keep identity sequences ahead of the explicitly inserted ids.
-  for (const t of ["User", "Customer", "Item", "Payment", "Notification"])
+  // Keep identity sequences ahead of the explicitly inserted ids (rider ids themselves are max+1).
+  for (const t of ["Customer", "Item", "Payment", "Notification"])
     await prisma.$executeRawUnsafe(
       `SELECT setval(pg_get_serial_sequence('"${t}"','id'), COALESCE((SELECT MAX(id) FROM "${t}"), 1))`,
     );
 
-  return { payments: pays.length, items: items.length, customers: CUSTOMERS.length, today };
+  return {
+    payments: demo.payments.length,
+    items: demo.items.length,
+    customers: CUSTOMERS.length,
+    today,
+  };
 }
