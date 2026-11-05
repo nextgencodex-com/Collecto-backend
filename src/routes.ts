@@ -1,8 +1,32 @@
 import { Router } from "express";
+import { env } from "./config/env.js";
+import { auditRoutes } from "./modules/audit/audit.routes.js";
 import { authRoutes } from "./modules/auth/auth.routes.js";
+import { bootstrapRoutes } from "./modules/bootstrap/bootstrap.routes.js";
+import { closingRoutes } from "./modules/closings/closings.routes.js";
+import { customerRoutes } from "./modules/customers/customers.routes.js";
+import { devRoutes } from "./modules/dev/dev.routes.js";
 import { healthRoutes } from "./modules/health/health.routes.js";
+import { itemRoutes } from "./modules/items/items.routes.js";
+import { notificationRoutes } from "./modules/notifications/notifications.routes.js";
+import { paymentRoutes } from "./modules/payments/payments.routes.js";
+import { productRoutes } from "./modules/products/products.routes.js";
+import { reportRoutes } from "./modules/reports/reports.routes.js";
+import { riderRoutes } from "./modules/riders/riders.routes.js";
+import { shopRoutes } from "./modules/shop/shop.routes.js";
 
 export const api = Router();
 api.use(healthRoutes);
 api.use("/auth", authRoutes);
-// Feature module routers are mounted here as they are built.
+api.use("/bootstrap", bootstrapRoutes);
+api.use("/riders", riderRoutes);
+api.use("/products", productRoutes);
+api.use("/customers", customerRoutes);
+api.use("/items", itemRoutes);
+api.use("/payments", paymentRoutes);
+api.use("/closings", closingRoutes);
+api.use("/notifications", notificationRoutes);
+api.use("/audit", auditRoutes);
+api.use("/reports", reportRoutes);
+api.use("/shop", shopRoutes);
+if (env.NODE_ENV !== "production") api.use("/dev", devRoutes);

@@ -8,6 +8,7 @@ import { logger } from "./config/logger.js";
 import { errorHandler, notFound } from "./middlewares/error-handler.js";
 import { apiLimiter } from "./middlewares/rate-limit.js";
 import { api } from "./routes.js";
+import { uploadsDir } from "./utils/uploads.js";
 
 export function createApp() {
   const app = express();
@@ -20,6 +21,16 @@ export function createApp() {
   app.use(cors({ origin: env.CORS_ORIGINS, credentials: true }));
   app.use(express.json({ limit: "100kb" }));
   app.use(cookieParser());
+  // Uploaded photos have random names and never change, so they can be cached for good.
+  app.use(
+    "/uploads",
+    express.static(uploadsDir(), {
+      index: false,
+      dotfiles: "deny",
+      maxAge: "30d",
+      immutable: true,
+    }),
+  );
   app.use("/api/v1", apiLimiter, api);
   app.use(notFound);
   app.use(errorHandler);
