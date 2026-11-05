@@ -37,6 +37,13 @@ const schema = z
     UPLOADS_PUBLIC_URL: z.string().default("http://localhost:4000/uploads"),
     OVERDUE_ALERTS_ENABLED: bool.default(true),
     OVERDUE_CRON: z.string().default("0 8 * * *"),
+    /** Max connections in the database pool. */
+    DB_POOL_MAX: z.coerce.number().int().min(1).max(200).default(10),
+    /**
+     * The bootstrap sends individual payments only for this many days; older payments are summarised
+     * per item (`priorPaid`). 0 sends the whole history.
+     */
+    BOOTSTRAP_PAYMENT_DAYS: z.coerce.number().int().min(0).max(3650).default(90),
     /** Swagger UI + openapi.json. Defaults to on, except in production. */
     DOCS_ENABLED: bool.optional(),
   })
