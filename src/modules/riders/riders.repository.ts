@@ -24,17 +24,26 @@ export const phoneTaken = async (phone: string, exceptId?: number, db: Db = pris
     select: { id: true },
   }));
 
-export const createRider = (
-  data: {
-    name: string;
-    phone: string;
-    area: string;
-    username: string;
-    passwordHash: string;
-    active: boolean;
-  },
-  db: Db = prisma,
-) => db.user.create({ data: { role: "RIDER", ...data } });
+/**
+ * Creates a rider with the next contiguous id (R1, R2, R3 ... with no gaps). The owner row is id 0, so
+ * rider ids are simply max+1; the advisory lock serialises concurrent creations, and a failed insert
+ * consumes nothing (unlike a database sequence).
+ */
+export function createRider(data: {
+  name: string;
+  phone: string;
+  area: string;
+  username: string;
+  passwordHash: string;
+  active: boolean;
+}) {
+  return prisma.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(727002)`;
+    const [row] = await tx.$queryRaw<{ next: number }[]>`
+      SELECT COALESCE(MAX(id), 0) + 1 AS next FROM "User" WHERE role = 'RIDER'`;
+    return tx.user.create({ data: { id: row!.next, role: "RIDER", ...data } });
+  });
+}
 
 export const updateRider = (id: number, data: Prisma.UserUpdateInput, db: Db = prisma) =>
   db.user.update({ where: { id }, data });
