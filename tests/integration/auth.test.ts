@@ -108,11 +108,11 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)("auth", () => {
       expect(exp.status).toBe(401);
       expect(exp.body.errors[0].code).toBe("token_expired");
 
-      const forged = jwt.sign({ role: "OWNER" }, "x".repeat(40), { subject: "4" });
+      const forged = jwt.sign({ role: "OWNER" }, "x".repeat(40), { subject: "0" });
       expect(
         (await request(app).get("/api/v1/auth/me").set("Authorization", `Bearer ${forged}`)).status,
       ).toBe(401);
-      const none = jwt.sign({ role: "OWNER" }, "", { algorithm: "none", subject: "4" });
+      const none = jwt.sign({ role: "OWNER" }, "", { algorithm: "none", subject: "0" });
       expect(
         (await request(app).get("/api/v1/auth/me").set("Authorization", `Bearer ${none}`)).status,
       ).toBe(401);

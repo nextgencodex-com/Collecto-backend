@@ -18,3 +18,5 @@ process.env.CORS_ORIGINS = "http://localhost:3000";
 process.env.LOG_LEVEL = "silent";
 process.env.UPLOADS_DIR = path.join(tmpdir(), "collecto-test-uploads");
 process.env.APP_TODAY = "2026-10-13";
+// Most tests want the whole payment history in /bootstrap; the window has its own tests.
+process.env.BOOTSTRAP_PAYMENT_DAYS = "0";

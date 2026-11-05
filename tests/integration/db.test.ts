@@ -138,7 +138,7 @@ describe.skipIf(!hasTestDb)("database (collecto_test)", () => {
     await expect(prisma.closing.create({ data: closing })).rejects.toThrow();
 
     const n = {
-      userId: 4,
+      userId: 0,
       type: "OVERDUE" as const,
       title: "t",
       text: "t",
