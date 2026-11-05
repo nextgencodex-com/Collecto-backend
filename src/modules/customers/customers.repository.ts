@@ -14,10 +14,13 @@ export const findById = (id: number, riderId?: number, db: Db = prisma) =>
   db.customer.findFirst({ where: { id, ...(riderId && { riderId }) } });
 
 export async function list(
-  f: { riderId?: number; q?: string; skip: number; take: number },
+  f: { riderId?: number; q?: string; ids?: number[]; skip: number; take: number },
   db: Db = prisma,
 ) {
-  const where: Prisma.CustomerWhereInput = { ...(f.riderId && { riderId: f.riderId }) };
+  const where: Prisma.CustomerWhereInput = {
+    ...(f.riderId && { riderId: f.riderId }),
+    ...(f.ids && { id: { in: f.ids } }),
+  };
   if (f.q) {
     const digits = f.q.replace(/\D/g, "");
     // Phone numbers are stored formatted ("077 512 3344"), so digit searches compare digits only.

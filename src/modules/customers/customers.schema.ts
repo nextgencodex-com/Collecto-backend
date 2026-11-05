@@ -40,4 +40,10 @@ export const extensionBody = z.object({
 export const listCustomersQuery = pageQuery.extend({
   q: z.string().trim().max(100).optional(),
   riderId: prefixedId(riderId, "Invalid rider.").optional(),
+  /** Payment status of the customer (worst status across their active items), as on the Customers screen. */
+  status: z
+    .string()
+    .toUpperCase()
+    .pipe(z.enum(["PAID", "DUE", "OVERDUE", "UPCOMING", "DONE"]))
+    .optional(),
 });

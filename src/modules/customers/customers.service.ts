@@ -5,6 +5,9 @@ import { fd, nowHHmm, toDbDate, today } from "../../utils/dates.js";
 import { customerDto, extensionDto, itemDto } from "../../utils/dto.js";
 import { HttpError } from "../../utils/http.js";
 import { removeImage, saveImage } from "../../utils/uploads.js";
+import { deriveAll } from "../../domain/adapters.js";
+import type { Status } from "../../domain/installments.js";
+import { loadCurrent } from "../bootstrap/bootstrap.repository.js";
 import * as items from "../items/items.repository.js";
 import * as notifications from "../notifications/notifications.repository.js";
 import * as riders from "../riders/riders.repository.js";
@@ -45,11 +48,32 @@ export async function create(i: {
 
 export async function list(
   user: AuthUser,
-  f: { q?: string; riderId?: number; page: number; pageSize: number },
+  f: {
+    q?: string;
+    riderId?: number;
+    status?: Status;
+    page: number;
+    pageSize: number;
+  },
 ) {
+  const riderId = scope(user) ?? f.riderId;
+  let ids: number[] | undefined;
+  if (f.status) {
+    // Status is derived from items and payments, so work it out for the candidates first.
+    const { customers, items: its, payments, prior } = await loadCurrent(today(), riderId);
+    const d = deriveAll(
+      its,
+      payments,
+      customers.map((c) => c.id),
+      today(),
+      prior,
+    );
+    ids = [...d.customers.values()].filter((c) => c.status === f.status).map((c) => c.id);
+  }
   const { rows, total } = await repo.list({
     q: f.q,
-    riderId: scope(user) ?? f.riderId,
+    ids,
+    riderId,
     skip: (f.page - 1) * f.pageSize,
     take: f.pageSize,
   });
