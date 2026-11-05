@@ -161,6 +161,7 @@ model Payment {
   @@index([itemId])
   @@index([date, riderId])
   @@index([customerId, date])
+  @@index([riderId])
 }
 
 model AuditEntry {
