@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   addDays,
+  scheduleReference,
   addMonths,
   cumulativePaise,
   daysBetween,
@@ -43,5 +44,49 @@ describe("schedule maths", () => {
     expect(addDays("2026-03-28", 7)).toBe("2026-04-04");
     expect(daysBetween("2026-10-13", "2026-11-05")).toBe(23);
     expect(daysBetween("2026-11-05", "2026-10-13")).toBe(-23);
+  });
+});
+
+describe("fast schedule == reference implementation", () => {
+  const starts: string[] = [];
+  for (const y of [2024, 2025, 2026, 2027, 2028, 2100])
+    for (const m of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+      for (const d of [1, 15, 28, 29, 30, 31]) {
+        const dim = new Date(Date.UTC(y, m, 0)).getUTCDate();
+        if (d <= dim)
+          starts.push(`${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`);
+      }
+  const plans = [
+    { price: 6400, amount: 400 },
+    { price: "100.10", amount: "30.00" },
+    { price: 120000, amount: 10000 },
+    { price: 48000, amount: 4000 },
+    { price: 999.99, amount: 33.33 },
+    { price: 1, amount: 1 },
+    { price: 200, amount: 1 },
+  ];
+
+  it("gives identical dates for every start day (incl. month ends, leap years), both frequencies and many plans", () => {
+    const mismatches: string[] = [];
+    let checked = 0;
+    for (const start of starts)
+      for (const plan of plans)
+        for (const freq of ["WEEKLY", "MONTHLY"] as const) {
+          const a = schedule({ ...plan, freq, start });
+          const b = scheduleReference({ ...plan, freq, start });
+          if (a.length !== b.length || a.some((x, k) => x !== b[k]))
+            mismatches.push(`${start} ${freq} ${JSON.stringify(plan)}`);
+          checked++;
+        }
+    expect(mismatches).toEqual([]);
+    expect(checked).toBeGreaterThan(5000);
+  }, 60_000);
+
+  it("returns a frozen shared array on repeat calls (callers cannot corrupt the cache)", () => {
+    const plan = { price: 6400, amount: 400, freq: "WEEKLY" as const, start: "2026-08-18" };
+    const a = schedule(plan);
+    expect(schedule({ ...plan })).toBe(a);
+    expect(Object.isFrozen(a)).toBe(true);
+    expect(() => (a as string[]).push("x")).toThrow();
   });
 });
