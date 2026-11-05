@@ -1,9 +1,13 @@
-import { deriveAll, toItemInput } from "../../domain/adapters.js";
+import { deriveAll, toItemInput, toPayInput } from "../../domain/adapters.js";
 import { STATUS_LABEL, expectedOn } from "../../domain/installments.js";
-import { cumulativePaise } from "../../domain/schedule.js";
+import { addDays, addMonths, cumulativePaise } from "../../domain/schedule.js";
 import { fd, isoDate, today } from "../../utils/dates.js";
 import { fmtRs } from "../../utils/money.js";
-import { loadCore } from "../bootstrap/bootstrap.repository.js";
+import {
+  loadPaymentsBetween,
+  loadPeople,
+  loadPriorPaid,
+} from "../bootstrap/bootstrap.repository.js";
 import * as riders from "../riders/riders.repository.js";
 
 export type ReportType = "daily" | "monthly" | "person" | "item" | "rider" | "overdue";
@@ -32,16 +36,44 @@ export async function build(
   const date = opts.date ?? t;
   const month = opts.month ?? t.slice(0, 7);
 
-  const [{ customers, items, payments }, riderRows] = await Promise.all([
-    loadCore(),
-    riders.listRiders(),
-  ]);
-  const d = deriveAll(
-    items,
-    payments,
-    customers.map((c) => c.id),
-    t,
-  );
+  // Each report reads only the payments it needs; the rest of the history arrives as per-item totals
+  // (`prior`), which is all the status/balance/expected maths uses.
+  const ymd = (s: string) => new Date(`${s}T00:00:00.000Z`);
+  const monthStart = (s: string) => s.slice(0, 7) + "-01";
+  const monthEnd = (m: string) => addDays(addMonths(m + "-01", 1), -1);
+  /** [from, to] range of payment rows, and the date before which payments are summarised. */
+  const range =
+    type === "daily"
+      ? { from: date, to: date }
+      : type === "rider"
+        ? { from: monthStart(date), to: date }
+        : type === "monthly"
+          ? { from: month + "-01", to: monthEnd(month) }
+          : null;
+  const needsCurrent = type !== "daily" && type !== "rider"; // statuses as of today
+
+  const [{ customers, items }, riderRows, rangePayments, priorBeforeRange, current] =
+    await Promise.all([
+      loadPeople(),
+      riders.listRiders(),
+      range ? loadPaymentsBetween(ymd(range.from), ymd(range.to)) : Promise.resolve([]),
+      range ? loadPriorPaid(ymd(range.from)) : Promise.resolve(new Map<number, number>()),
+      needsCurrent
+        ? Promise.all([loadPaymentsBetween(ymd(t)), loadPriorPaid(ymd(t))])
+        : Promise.resolve(null),
+    ]);
+  const payments = rangePayments;
+  const d = (
+    current
+      ? deriveAll(
+          items,
+          current[0],
+          customers.map((c) => c.id),
+          t,
+          current[1],
+        )
+      : null
+  ) as ReturnType<typeof deriveAll>; // only the branches that need today's statuses touch it
   const cust = new Map(customers.map((c) => [c.id, c]));
   const rider = new Map(riderRows.map((r) => [r.id, r]));
   const itemRow = new Map(items.map((i) => [i.id, i]));
@@ -51,9 +83,15 @@ export async function build(
     const i = itemRow.get(id);
     return i ? `${i.code} · ${i.name}` : "—";
   };
-  const pays = d.pays;
-  const inputs = items.map(toItemInput);
+  const pays = payments.map(toPayInput);
+  const inputs = items.map((i) => toItemInput(i, { priorPaise: priorBeforeRange.get(i.id) ?? 0 }));
   const inputOf = new Map(inputs.map((x) => [x.id, x]));
+  // expectedOn needs each item's own payments; handing it the whole ledger made reports O(items x payments)
+  const paysByItem = new Map<number, typeof pays>();
+  for (const p of pays)
+    (paysByItem.get(p.itemId) ?? paysByItem.set(p.itemId, []).get(p.itemId)!).push(p);
+  const expected = (it: (typeof inputs)[number], on: string) =>
+    expectedOn(it, on, paysByItem.get(it.id) ?? []);
   const payDate = (i: number) => isoDate(payments[i]!.date);
 
   let title: string;
@@ -76,7 +114,7 @@ export async function build(
         R(fmtRs(pays[i]!.paise)),
       ];
     });
-    const exp = sum(inputs.map((it) => expectedOn(it, date, pays)));
+    const exp = sum(inputs.map((it) => expected(it, date)));
     const col = sum(idx.map((i) => pays[i]!.paise));
     summary = [
       ["Expected", fmtRs(exp)],
@@ -190,9 +228,7 @@ export async function build(
     ];
     rows = riderRows.map((r) => {
       const e = sum(
-        inputs
-          .filter((it) => itemRow.get(it.id)!.riderId === r.id)
-          .map((it) => expectedOn(it, date, pays)),
+        inputs.filter((it) => itemRow.get(it.id)!.riderId === r.id).map((it) => expected(it, date)),
       );
       const ofRider = payments.map((p, i) => ({ p, i })).filter(({ p }) => p.riderId === r.id);
       const c = sum(ofRider.filter(({ i }) => payDate(i) === date).map(({ i }) => pays[i]!.paise));

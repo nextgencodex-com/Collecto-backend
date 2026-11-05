@@ -4,7 +4,12 @@ import { calcCustomer, calcItem, type CalcCustomer, type CalcItem } from "./inst
 import type { ItemInput, PayInput } from "./installments.js";
 import { toPaise } from "./schedule.js";
 
-export const toItemInput = (i: Item): ItemInput => ({
+/**
+ * `opts` is an object on purpose: `items.map(toItemInput)` passes the array index as the second argument,
+ * which must never be mistaken for money.
+ */
+export const toItemInput = (i: Item, opts: { priorPaise?: number } = {}): ItemInput => ({
+  priorPaise: typeof opts === "object" ? (opts.priorPaise ?? 0) : 0,
   id: i.id,
   customerId: i.customerId,
   price: i.price,
@@ -25,12 +30,14 @@ export function deriveAll(
   payments: Payment[],
   customerIds: number[],
   today: string,
+  /** itemId -> paise paid before the window `payments` covers (see loadCurrent). */
+  prior: Map<number, number> = new Map(),
 ) {
   const pays = payments.map(toPayInput);
   const byItem = new Map<number, PayInput[]>();
   for (const p of pays) (byItem.get(p.itemId) ?? byItem.set(p.itemId, []).get(p.itemId)!).push(p);
   const calcItems: CalcItem[] = items.map((i) =>
-    calcItem(toItemInput(i), byItem.get(i.id) ?? [], today),
+    calcItem(toItemInput(i, { priorPaise: prior.get(i.id) ?? 0 }), byItem.get(i.id) ?? [], today),
   );
   const customers = new Map<number, CalcCustomer>(
     customerIds.map((id) => [id, calcCustomer(id, calcItems)]),

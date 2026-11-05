@@ -19,6 +19,11 @@ export interface ItemInput {
   amount: number | string | { toString(): string };
   freq: Freq;
   start: string;
+  /**
+   * Total (paise) of this item's payments that are NOT in the payment list passed to calcItem
+   * because they are older than the list's window. All of them must predate `today`.
+   */
+  priorPaise?: number;
 }
 export interface PayInput {
   itemId: number;
@@ -50,8 +55,9 @@ export function calcItem(it: ItemInput, pays: PayInput[], today: string): CalcIt
   const cum = cumulativePaise(it);
   const price = toPaise(it.price);
   const mine = pays.filter((p) => p.itemId === it.id);
-  const paid = sum(mine.map((p) => p.paise));
-  const paidBefore = sum(mine.filter((p) => p.date < today).map((p) => p.paise));
+  const prior = it.priorPaise ?? 0;
+  const paid = prior + sum(mine.map((p) => p.paise));
+  const paidBefore = prior + sum(mine.filter((p) => p.date < today).map((p) => p.paise));
   const cT = dates.filter((d) => d <= today).length;
   const cB = dates.filter((d) => d < today).length;
   const expT = cT ? cum(cT - 1) : 0;
@@ -94,7 +100,9 @@ export function expectedOn(it: ItemInput, date: string, pays: PayInput[]): numbe
   const cum = cumulativePaise(it);
   const c = schedule(it).filter((d) => d <= date).length;
   const e = c ? cum(c - 1) : 0;
-  const pb = sum(pays.filter((p) => p.itemId === it.id && p.date < date).map((p) => p.paise));
+  const pb =
+    (it.priorPaise ?? 0) +
+    sum(pays.filter((p) => p.itemId === it.id && p.date < date).map((p) => p.paise));
   return Math.max(0, e - pb);
 }
 
