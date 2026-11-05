@@ -159,7 +159,8 @@ export async function list(
   },
 ) {
   const { rows, total } = await repo.list({
-    riderId: user.role === "RIDER" ? user.id : f.riderId,
+    riderId: f.riderId,
+    scopeRiderId: user.role === "RIDER" ? user.id : undefined,
     customerId: f.customerId,
     itemId: f.itemId,
     date: f.date ? toDbDate(f.date) : undefined,

@@ -41,7 +41,10 @@ export const updateAmount = (id: number, amount: string, db: Db) =>
 
 export async function list(
   f: {
+    /** Filter: payments collected by this rider. */
     riderId?: number;
+    /** Authorisation scope for a rider: payments on their customers' items, or collected by them. */
+    scopeRiderId?: number;
     customerId?: number;
     itemId?: number;
     date?: Date;
@@ -52,6 +55,9 @@ export async function list(
 ) {
   const where: Prisma.PaymentWhereInput = {
     ...(f.riderId && { riderId: f.riderId }),
+    ...(f.scopeRiderId && {
+      OR: [{ riderId: f.scopeRiderId }, { customer: { riderId: f.scopeRiderId } }],
+    }),
     ...(f.customerId && { customerId: f.customerId }),
     ...(f.itemId && { itemId: f.itemId }),
     ...(f.date && { date: f.date }),

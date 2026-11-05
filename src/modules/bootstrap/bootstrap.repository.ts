@@ -1,13 +1,16 @@
 import { prisma } from "../../config/database.js";
+import { toPaise } from "../../domain/schedule.js";
 import type { Prisma } from "../../generated/prisma/client.js";
 
 type Db = Prisma.TransactionClient;
 
 /**
- * Customers, their items and every payment on those items. With `riderId`, only that rider's
- * customers; without it, everything. Fixed number of queries regardless of data size (no N+1).
+ * Customers, their items and their payments. With `riderId`, only that rider's customers, and the
+ * payments are those on their customers' items plus any the rider collected themselves (so a customer
+ * reassigned mid-day does not make the previous rider's collections disappear). `since` limits the
+ * payments to that date onwards (see loadPriorPaid for what is left out). Fixed number of queries.
  */
-export async function loadCore(riderId?: number, db: Db = prisma) {
+export async function loadCore(riderId?: number, db: Db = prisma, since?: Date) {
   const customers = await db.customer.findMany({
     where: riderId ? { riderId } : undefined,
     orderBy: { id: "asc" },
@@ -18,11 +21,57 @@ export async function loadCore(riderId?: number, db: Db = prisma) {
     orderBy: { id: "asc" },
   });
   const itemIds = items.map((i) => i.id);
+  const scope: Prisma.PaymentWhereInput = riderId
+    ? { OR: [{ itemId: { in: itemIds } }, { riderId }] }
+    : {};
   const payments = await db.payment.findMany({
-    where: riderId ? { itemId: { in: itemIds } } : undefined,
+    where: since ? { AND: [scope, { date: { gte: since } }] } : scope,
     orderBy: { id: "asc" },
   });
   return { customers, items, payments };
+}
+
+/**
+ * itemId -> total paid (paise) by payments dated before `before`: what a windowed read leaves out.
+ * Without `itemIds` it covers every item (no huge IN list).
+ */
+export async function loadPriorPaid(before: Date, itemIds?: number[], db: Db = prisma) {
+  const rows = await db.payment.groupBy({
+    by: ["itemId"],
+    where: { ...(itemIds && { itemId: { in: itemIds } }), date: { lt: before } },
+    _sum: { amount: true },
+  });
+  return new Map(rows.map((r) => [r.itemId, r._sum.amount ? toPaise(r._sum.amount) : 0]));
+}
+
+/** Every customer and item (no payments). */
+export const loadPeople = async (db: Db = prisma) => ({
+  customers: await db.customer.findMany({ orderBy: { id: "asc" } }),
+  items: await db.item.findMany({ orderBy: { id: "asc" } }),
+});
+
+/** Payments dated from `from` to `to` inclusive; either bound may be omitted. */
+export const loadPaymentsBetween = (from?: Date, to?: Date, db: Db = prisma) =>
+  db.payment.findMany({
+    where:
+      from || to ? { date: { ...(from && { gte: from }), ...(to && { lte: to }) } } : undefined,
+    orderBy: { id: "asc" },
+  });
+
+/**
+ * Everything needed to work out *today's* statuses and balances without reading the whole payment history:
+ * payments dated today or later, plus each item's total of everything before today (`prior`).
+ * Used by the status filter, daily closing and the overdue job.
+ */
+export async function loadCurrent(today: string, riderId?: number, db: Db = prisma) {
+  const since = new Date(`${today}T00:00:00.000Z`);
+  const core = await loadCore(riderId, db, since);
+  const prior = await loadPriorPaid(
+    since,
+    core.items.map((i) => i.id),
+    db,
+  );
+  return { ...core, prior };
 }
 
 export const loadOwnerExtras = (ownerId: number, db: Db = prisma) =>
