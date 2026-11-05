@@ -7,7 +7,7 @@ import {
 } from "@asteasolutions/zod-to-openapi";
 import { z, type ZodType } from "zod";
 import { loginBody } from "../modules/auth/auth.schema.js";
-import { submitClosingBody } from "../modules/closings/closings.routes.js";
+import { submitClosingBody } from "../modules/closings/closings.schema.js";
 import {
   assignRiderBody,
   createCustomerBody,
@@ -16,7 +16,7 @@ import {
   listCustomersQuery,
 } from "../modules/customers/customers.schema.js";
 import { createItemBody, listItemsQuery } from "../modules/items/items.schema.js";
-import { listNotificationsQuery } from "../modules/notifications/notifications.routes.js";
+import { listNotificationsQuery } from "../modules/notifications/notifications.schema.js";
 import {
   correctPaymentBody,
   idParam as paymentIdParam,
@@ -24,9 +24,9 @@ import {
   recordPaymentsBody,
 } from "../modules/payments/payments.schema.js";
 import { codeParam, createProductBody, stockBody } from "../modules/products/products.schema.js";
-import { reportParams, reportQuery } from "../modules/reports/reports.routes.js";
+import { reportParams, reportQuery } from "../modules/reports/reports.schema.js";
 import { createRiderBody, updateRiderBody } from "../modules/riders/riders.schema.js";
-import { updateShopBody } from "../modules/shop/shop.routes.js";
+import { updateShopBody } from "../modules/shop/shop.schema.js";
 import { pageQuery } from "../utils/schemas.js";
 import { riderId } from "../utils/ids.js";
 import { prefixedId } from "../utils/schemas.js";
@@ -90,6 +90,11 @@ const Item = z.object({
   amount: num,
   period: num,
   start: str,
+  priorPaid: num
+    .optional()
+    .describe(
+      "Bootstrap only: total of this item's payments dated before `paymentsFrom` (they are not sent one by one).",
+    ),
 });
 const Payment = z.object({
   id: str,
@@ -113,6 +118,27 @@ const Closing = z.object({
   cash: num,
   count: num,
   note: str,
+});
+const Audit = z.object({
+  id: str,
+  date: str,
+  time: str,
+  user: str,
+  action: str,
+  txn: str,
+  ref: str,
+  old: str,
+  nw: str,
+  reason: str,
+});
+const Notification = z.object({
+  id: str,
+  type: z.enum(["payment", "overdue", "closing", "system"]),
+  title: str,
+  text: str,
+  date: str,
+  time: str,
+  read: z.boolean(),
 });
 const Extension = z.object({
   id: str,
@@ -191,7 +217,15 @@ const AUTH_NOTE: Record<Auth, string> = {
   rider: "Rider only.",
 };
 
+/** "GET /customers" -> the documented success-response schema; used by tests to catch docs drifting from reality. */
+export const documentedResponses = new Map<string, ZodType>();
+
+/** Every documented endpoint with its required role; tests use it to check authorization exhaustively. */
+export const documentedRoutes: { method: Doc["method"]; path: string; auth: Auth }[] = [];
+
 function doc(d: Doc) {
+  documentedResponses.set(`${d.method.toUpperCase()} ${d.path}`, d.response ?? empty);
+  documentedRoutes.push({ method: d.method, path: d.path, auth: d.auth });
   const errors = new Set<number>(d.errors ?? []);
   if (d.auth !== "none") errors.add(401);
   if (d.auth === "owner" || d.auth === "rider") errors.add(403);
@@ -302,6 +336,10 @@ doc({
   auth: "any",
   response: ok(
     z.object({
+      today: str.describe("The server's date (shop time zone). Due-date maths is relative to it."),
+      paymentsFrom: str
+        .nullable()
+        .describe("Individual payments are included from this date on; null = whole history."),
       shop: z.object({ name: str, phone: str, address: str }),
       owner: z.object({ name: str, email: str.nullable(), username: str, photo: str }),
       riders: z.array(Rider),
@@ -309,8 +347,8 @@ doc({
       customers: z.array(Customer),
       items: z.array(Item),
       payments: z.array(Payment),
-      audit: z.array(z.record(z.string(), z.unknown())),
-      notifs: z.array(z.record(z.string(), z.unknown())),
+      audit: z.array(Audit),
+      notifs: z.array(Notification),
       closings: z.array(Closing),
       extensions: z.array(Extension),
     }),
@@ -583,17 +621,7 @@ doc({
   summary: "Owner notifications, newest first",
   auth: "owner",
   query: listNotificationsQuery,
-  response: list(
-    z.object({
-      id: str,
-      type: z.enum(["payment", "overdue", "closing", "system"]),
-      title: str,
-      text: str,
-      date: str,
-      time: str,
-      read: z.boolean(),
-    }),
-  ),
+  response: list(Notification),
 });
 doc({
   method: "post",
@@ -609,20 +637,7 @@ doc({
   summary: "Audit log, newest first",
   auth: "owner",
   query: pageQuery,
-  response: paged(
-    z.object({
-      id: str,
-      date: str,
-      time: str,
-      user: str,
-      action: str,
-      txn: str,
-      ref: str,
-      old: str,
-      nw: str,
-      reason: str,
-    }),
-  ),
+  response: paged(Audit),
 });
 
 // ---------- reports ----------
