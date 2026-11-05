@@ -2,9 +2,9 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { Prisma, PrismaClient } from "../generated/prisma/client.js";
 import { env } from "./env.js";
 
-// Pool size is controlled by the pg pool; override via DATABASE_URL params if needed.
+// Pool size comes from DB_POOL_MAX.
 export const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: env.DATABASE_URL }),
+  adapter: new PrismaPg({ connectionString: env.DATABASE_URL, max: env.DB_POOL_MAX }),
 });
 
 /** True if the database answers a trivial query. */
