@@ -37,9 +37,11 @@ export const addMonths = (s: string, n: number): string => {
 export const daysBetween = (from: string, to: string): number =>
   Math.round((parse(to).getTime() - parse(from).getTime()) / 86_400_000);
 
+type MoneyLike = number | string | { toString(): string };
+
 export interface PlanInput {
-  price: number | string;
-  amount: number | string;
+  price: MoneyLike;
+  amount: MoneyLike;
   freq: Freq;
   start: string;
 }
