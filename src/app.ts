@@ -1,3 +1,4 @@
+import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
@@ -33,6 +34,8 @@ export function createApp() {
       immutable: true,
     }),
   );
+  // JSON compresses ~14x (owner bootstrap 7 MB -> 0.5 MB); mounted after /uploads so photos are not re-compressed.
+  app.use(compression());
   app.use("/api/v1", apiLimiter, api);
   app.use(notFound);
   app.use(errorHandler);
