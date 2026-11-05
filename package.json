@@ -18,7 +18,10 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
-    "db:test:setup": "node scripts/migrate-test.mjs"
+    "db:test:setup": "node scripts/migrate-test.mjs",
+    "owner:create": "tsx src/cli/create-owner.ts",
+    "owner:create:prod": "node dist/cli/create-owner.js",
+    "perf": "tsx scripts/profile.ts"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^9.1.0",
