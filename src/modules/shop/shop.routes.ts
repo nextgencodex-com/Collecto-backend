@@ -12,7 +12,7 @@ import * as service from "./shop.service.js";
 export const shopRoutes = Router();
 shopRoutes.use(authenticate);
 
-const updateBody = z
+export const updateShopBody = z
   .object({
     name: z.string().trim().min(1, "Enter the shop name.").max(120),
     phone: z.string().trim().max(40),
@@ -25,7 +25,7 @@ shopRoutes.get("/", async (_req, res) => {
   ok(res, await service.get());
 });
 
-shopRoutes.patch("/", authorize("OWNER"), validate({ body: updateBody }), async (req, res) => {
+shopRoutes.patch("/", authorize("OWNER"), validate({ body: updateShopBody }), async (req, res) => {
   ok(res, await service.update(req.body), "Shop updated");
 });
 

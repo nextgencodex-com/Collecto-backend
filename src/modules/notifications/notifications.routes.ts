@@ -9,9 +9,11 @@ import * as service from "./notifications.service.js";
 export const notificationRoutes = Router();
 notificationRoutes.use(authenticate, authorize("OWNER"));
 
-const query = z.object({ limit: z.coerce.number().int().min(1).max(200).default(100) });
+export const listNotificationsQuery = z.object({
+  limit: z.coerce.number().int().min(1).max(200).default(100),
+});
 
-notificationRoutes.get("/", validate({ query }), async (req, res) => {
+notificationRoutes.get("/", validate({ query: listNotificationsQuery }), async (req, res) => {
   ok(res, await service.list(req.user!.id, Number(req.query.limit)));
 });
 
