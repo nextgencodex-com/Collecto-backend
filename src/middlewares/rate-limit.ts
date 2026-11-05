@@ -1,4 +1,5 @@
 import rateLimit from "express-rate-limit";
+import { env } from "../config/env.js";
 
 const base = {
   standardHeaders: true,
@@ -7,5 +8,9 @@ const base = {
 };
 
 export const apiLimiter = rateLimit({ ...base, windowMs: 60_000, limit: 300 });
-/** Applied to /auth/login in Phase 3. */
-export const loginLimiter = rateLimit({ ...base, windowMs: 15 * 60_000, limit: 10 });
+
+export const createLoginLimiter = (limit = 10, skip?: () => boolean) =>
+  rateLimit({ ...base, windowMs: 15 * 60_000, limit, skip });
+
+/** 10 attempts per 15 minutes per IP. Disabled under test so suites can log in freely. */
+export const loginLimiter = createLoginLimiter(10, () => env.NODE_ENV === "test");
