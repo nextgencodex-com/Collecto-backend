@@ -37,6 +37,8 @@ const schema = z
     UPLOADS_PUBLIC_URL: z.string().default("http://localhost:4000/uploads"),
     OVERDUE_ALERTS_ENABLED: bool.default(true),
     OVERDUE_CRON: z.string().default("0 8 * * *"),
+    /** Swagger UI + openapi.json. Defaults to on, except in production. */
+    DOCS_ENABLED: bool.optional(),
   })
   .refine((e) => e.COOKIE_SAMESITE !== "none" || e.COOKIE_SECURE, {
     path: ["COOKIE_SECURE"],
@@ -53,4 +55,7 @@ if (!parsed.success) {
   for (const i of parsed.error.issues) console.error(`  ${i.path.join(".")}: ${i.message}`);
   process.exit(1);
 }
-export const env = parsed.data;
+export const env = {
+  ...parsed.data,
+  DOCS_ENABLED: parsed.data.DOCS_ENABLED ?? parsed.data.NODE_ENV !== "production",
+};
