@@ -22,21 +22,26 @@ export const moneyOrZero = (msg = "Enter a valid amount.") =>
 export const dec = (paise: number) => fromPaise(paise).toFixed(2);
 
 /** Decimal / numeric value from Prisma -> plain JSON number. */
-export const num = (v: { toString(): string }) => Number(v.toString());
+export const num = (v: { toString(): string }): number =>
+  // Prisma's Decimal has a direct conversion; avoid the string round trip on the hot bootstrap path
+  typeof (v as { toNumber?: () => number }).toNumber === "function"
+    ? (v as { toNumber: () => number }).toNumber()
+    : Number(v.toString());
 
 export const paise = toPaise;
 
+// One formatter per style, built once (constructing Intl.NumberFormat per value is what made big reports slow).
+const wholeFmt = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+});
+const paiseFmt = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 /** "Rs. 1,000" for whole amounts, "Rs. 1,234.50" otherwise. Negative values keep their sign. */
-export const fmtRs = (p: number) => {
-  const whole = p % 100 === 0;
-  return (
-    "Rs. " +
-    (p / 100).toLocaleString("en-US", {
-      minimumFractionDigits: whole ? 0 : 2,
-      maximumFractionDigits: 2,
-    })
-  );
-};
+export const fmtRs = (p: number) => "Rs. " + (p % 100 === 0 ? wholeFmt : paiseFmt).format(p / 100);
 
 /** "+Rs. 200" / "−Rs. 1,000" */
 export const signedRs = (p: number) => (p >= 0 ? "+" : "−") + fmtRs(Math.abs(p));
