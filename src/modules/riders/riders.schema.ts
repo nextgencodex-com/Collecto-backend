@@ -1,5 +1,7 @@
 import { z } from "zod";
+import { riderId } from "../../utils/ids.js";
 import { formatPhone } from "../../utils/phone.js";
+import { prefixedId } from "../../utils/schemas.js";
 
 const name = z.string().trim().min(1, "Enter the rider name.").max(100);
 const phone = z.string().transform((s, ctx) => {
@@ -31,3 +33,5 @@ export const updateRiderBody = z
   .object({ name, phone, area, username, password, active: z.boolean() })
   .partial()
   .refine((b) => Object.keys(b).length > 0, "Nothing to update.");
+
+export const idParam = z.object({ id: prefixedId(riderId, "Rider not found.") });

@@ -2,6 +2,7 @@ import type { CookieOptions, Request, Response } from "express";
 import { env } from "../../config/env.js";
 import { HttpError, ok } from "../../utils/http.js";
 import * as service from "./auth.service.js";
+import { REFRESH_RACE } from "./auth.service.js";
 
 const COOKIE = "collecto_rt";
 const base: CookieOptions = {
@@ -37,7 +38,11 @@ export async function refresh(req: Request, res: Response) {
   try {
     respond(res, await service.refresh(req.cookies?.[COOKIE]), "Session refreshed");
   } catch (e) {
-    if (e instanceof HttpError) clearRefreshCookie(res);
+    // A lost race means the browser already holds the winner's newer cookie: leave it alone.
+    const race =
+      e instanceof HttpError &&
+      (e.errors[0] as { code?: string } | undefined)?.code === REFRESH_RACE;
+    if (e instanceof HttpError && !race) clearRefreshCookie(res);
     throw e;
   }
 }
